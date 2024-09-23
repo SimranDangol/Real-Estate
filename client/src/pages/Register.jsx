@@ -7,6 +7,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -110,6 +111,7 @@ const Register = () => {
                 "Sign Up"
               )}
             </Button>
+            <OAuth/>
           </div>
         </form>
         <p className="mt-4 text-center text-gray-700 dark:text-gray-300">

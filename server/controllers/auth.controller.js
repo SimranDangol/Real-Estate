@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { ApiError } from "../utils/apiError.js";
 import User from "../models/user.model.js";
+import bcrypt from "bcryptjs";
 
 export const generateRefreshandAccessTokens = async (userId) => {
   try {
@@ -104,4 +105,67 @@ export const login = asyncHandler(async (req, res) => {
         "User logged In Successfully"
       )
     );
+});
+
+
+export const google = asyncHandler(async (req, res) => {
+  const { email, name, googlePhotoUrl } = req.body;
+  try {
+    let user = await User.findOne({ email });
+
+    if (user) {
+      // User exists, generate tokens
+      const { accessToken, refreshToken } =
+        await generateRefreshandAccessTokens(user._id);
+
+      const { password, refreshToken: _, ...rest } = user._doc; // Exclude password and refreshToken from the response
+
+      res
+        .status(200)
+        .cookie("accessToken", accessToken, { httpOnly: true, secure: true })
+        .cookie("refreshToken", refreshToken, { httpOnly: true, secure: true })
+        .json(
+          new ApiResponse(200, rest, "User logged in successfully via Google")
+        );
+    } else {
+      // New user, create account and generate tokens
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      const hashedPassword = await bcrypt.hash(generatedPassword, 10); // Fixed this line
+
+      const newUser = new User({
+        username:
+          name.toLowerCase().split(" ").join("") +
+          Math.random().toString(9).slice(-4),
+        email,
+        password: hashedPassword,
+        image: googlePhotoUrl,
+      });
+
+      await newUser.save();
+
+      const { accessToken, refreshToken } =
+        await generateRefreshandAccessTokens(newUser._id);
+
+      const { password, refreshToken: _, ...rest } = newUser._doc; // Exclude password and refreshToken from the response
+
+      res
+        .status(200)
+        .cookie("accessToken", accessToken, { httpOnly: true, secure: true })
+        .cookie("refreshToken", refreshToken, { httpOnly: true, secure: true })
+        .json(
+          new ApiResponse(
+            200,
+            rest,
+            "User registered and logged in successfully via Google"
+          )
+        );
+    }
+  } catch (error) {
+    console.error("Error during Google authentication:", error); // Log the actual error
+    return res
+      .status(400)
+      .json(new ApiError(400, error.message || "Something went wrong"));
+  }
 });

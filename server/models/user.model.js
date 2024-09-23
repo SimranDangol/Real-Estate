@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { type } from "os";
 
 const userSchema = new mongoose.Schema(
   {
@@ -19,6 +20,10 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Password is required"],
+    },
+    image: {
+      type: String,
+      default: "",
     },
     refreshToken: {
       type: String, // we only send refreshToken to the database
