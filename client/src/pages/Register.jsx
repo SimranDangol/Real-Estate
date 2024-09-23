@@ -39,6 +39,7 @@ const Register = () => {
     // Validate form before submitting
     if (!validateForm()) return;
     setLoading(true); // is called before the request
+    
     try {
       const res = await axios.post("/api/v1/auth/register", formData, {
         headers: { "Content-Type": "application/json" },
