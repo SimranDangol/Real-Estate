@@ -17,13 +17,15 @@ const OAuth = () => {
       provider.setCustomParameters({ prompt: "select_account" });
       const resultsFromGoogle = await signInWithPopup(auth, provider);
 
+      const profilePicture = resultsFromGoogle.user.photoURL;
+
       const res = await fetch("/api/v1/auth/google", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: resultsFromGoogle.user.displayName,
           email: resultsFromGoogle.user.email,
-          googlePhotoUrl: resultsFromGoogle.user.photoURL,
+          googlePhotoUrl: profilePicture,
         }),
       });
 
@@ -39,7 +41,6 @@ const OAuth = () => {
       navigate("/");
     } catch (error) {
       console.error("Error during Google authentication:", error);
-      // Handle the error appropriately (e.g., show an error message to the user)
     }
   };
 

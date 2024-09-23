@@ -1,22 +1,24 @@
-import { useState } from 'react';
-import { Button, Navbar, TextInput } from "flowbite-react";
+import { useState } from "react";
+import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import { NavLink, Link } from "react-router-dom";
 import { AiOutlineSearch, AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { FaMoon } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { currentUser } = useSelector((state) => state.user);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   return (
-    <Navbar className="border-b-2 py-2">
-      <div className="container mx-auto flex items-center justify-between flex-wrap">
+    <Navbar className="py-2 border-b-2">
+      <div className="container flex flex-wrap items-center justify-between mx-auto">
         <Link
           to="/"
-          className="self-center font-serif font-semibold text-xl sm:text-2xl dark:text-white flex-shrink-0"
+          className="self-center flex-shrink-0 font-serif text-xl font-semibold sm:text-2xl dark:text-white"
         >
           <span className="px-2 py-1 text-white rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
             Real
@@ -25,22 +27,37 @@ const Header = () => {
         </Link>
 
         <div className="flex items-center lg:order-last">
-          <Button
-            className="h-10 w-10 p-2 mr-2"
-            color="gray"
-            pill
-          >
+          <Button className="w-10 h-10 p-2 mr-2" color="gray" pill>
             <FaMoon />
           </Button>
 
-          <Link to="/login">
-            <Button gradientDuoTone="purpleToBlue" outline size="sm">
-              Login
-            </Button>
-          </Link>
+          {currentUser ? (
+            <Dropdown
+              arrowIcon={false}
+              inline
+              label={
+                <Avatar
+                  img={currentUser.data.image}
+                  rounded
+                  alt="User Profile"
+                />
+              }
+            >
+              <Dropdown.Item>
+                <Link to="/profile"> View Profile</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>Sign out</Dropdown.Item>
+            </Dropdown>
+          ) : (
+            <Link to="/login">
+              <Button gradientDuoTone="purpleToBlue" outline>
+                Login
+              </Button>
+            </Link>
+          )}
 
           <Button
-            className="lg:hidden ml-2 h-10 w-10 p-2"
+            className="w-10 h-10 p-2 ml-2 lg:hidden"
             color="gray"
             pill
             onClick={toggleMenu}
@@ -49,7 +66,11 @@ const Header = () => {
           </Button>
         </div>
 
-        <div className={`w-full lg:flex lg:items-center lg:w-auto ${isMenuOpen ? 'block' : 'hidden'}`}>
+        <div
+          className={`w-full lg:flex lg:items-center lg:w-auto ${
+            isMenuOpen ? "block" : "hidden"
+          }`}
+        >
           <div className="lg:flex-grow lg:flex lg:items-center lg:justify-center">
             <form className="mt-4 lg:mt-0 lg:mr-4">
               <TextInput
@@ -59,7 +80,7 @@ const Header = () => {
                 className="w-full lg:w-64"
               />
             </form>
-            <div className="flex flex-col lg:flex-row gap-4 mt-4 lg:mt-0">
+            <div className="flex flex-col gap-4 mt-4 lg:flex-row lg:mt-0">
               <NavLink
                 to="/"
                 className={({ isActive }) =>

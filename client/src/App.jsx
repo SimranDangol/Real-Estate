@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PrivateRoute from "./components/PrivateRoute";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,7 +21,9 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       <Route path="about" element={<About />} />
-      <Route path="profile" element={<Profile />} />
+      <Route element={<PrivateRoute />}>
+        <Route path="profile" element={<Profile />} />
+      </Route>
     </Route>
   )
 );
