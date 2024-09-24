@@ -5,6 +5,7 @@ import cors from "cors";
 //routes import
 import authRouter from "./routes/auth.routes.js";
 import userRouter from "./routes/user.routes.js";
+import listingRouter from "./routes/listing.routes.js";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(cors(corsOptions));
 //routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/listing", listingRouter);
 
 
 export { app };
