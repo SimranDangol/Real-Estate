@@ -5,6 +5,9 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFailure,
 } from "../redux/user/userSlice";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -21,6 +24,7 @@ const Profile = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -39,6 +43,26 @@ const Profile = () => {
     } catch (error) {
       toast.error(error.response?.data?.message || "Update failed");
       dispatch(updateUserFailure());
+    }
+  };
+
+  const deleteUser = async () => {
+    try {
+      dispatch(deleteUserStart());
+
+      const res = await axios.delete("/api/v1/user/delete", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        toast.success(res.data.message || "Delete Successfull");
+        dispatch(deleteUserSuccess(res.data));
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Delete failed");
+      dispatch(deleteUserFailure());
     }
   };
 
@@ -92,7 +116,9 @@ const Profile = () => {
 
       <div className="flex justify-between mt-5 text-sm text-red-600 cursor-pointer ">
         <span className="hover:underline">Sign out</span>
-        <span className="hover:underline">Delete Account</span>
+        <span className="hover:underline" onClick={deleteUser}>
+          Delete Account
+        </span>
       </div>
     </div>
   );

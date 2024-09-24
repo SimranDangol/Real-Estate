@@ -25,3 +25,15 @@ export const updateUser = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, user, "User Profile Updated Successfully"));
 });
+
+export const deleteUser = asyncHandler(async (req, res) => {
+  const userId = req.user?._id;
+
+  if (!userId) {
+    return res.status(401).json(new ApiResponse(401, null, "Unauthorized"));
+  }
+
+  await User.findByIdAndDelete(userId);
+
+  res.status(200).json(new ApiResponse(200, null, "User deleted successfully"));
+});

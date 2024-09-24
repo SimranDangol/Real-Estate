@@ -107,6 +107,30 @@ export const login = asyncHandler(async (req, res) => {
     );
 });
 
+export const signout = asyncHandler(async (req, res) => {
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $unset: {
+        refreshToken: 1, // this removes the field from document
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, {}, "User logged Out"));
+});
 
 export const google = asyncHandler(async (req, res) => {
   const { email, name, googlePhotoUrl } = req.body;
@@ -119,7 +143,8 @@ export const google = asyncHandler(async (req, res) => {
       await user.save();
     } else {
       const generatedPassword =
-        Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
       const hashedPassword = await bcrypt.hash(generatedPassword, 10);
 
       user = new User({
@@ -134,8 +159,9 @@ export const google = asyncHandler(async (req, res) => {
       await user.save();
     }
 
-    const { accessToken, refreshToken } =
-      await generateRefreshandAccessTokens(user._id);
+    const { accessToken, refreshToken } = await generateRefreshandAccessTokens(
+      user._id
+    );
 
     const { password, refreshToken: _, ...userData } = user.toObject();
 
@@ -143,7 +169,13 @@ export const google = asyncHandler(async (req, res) => {
       .status(200)
       .cookie("accessToken", accessToken, { httpOnly: true, secure: true })
       .cookie("refreshToken", refreshToken, { httpOnly: true, secure: true })
-      .json(new ApiResponse(200, userData, "User authenticated successfully via Google"));
+      .json(
+        new ApiResponse(
+          200,
+          userData,
+          "User authenticated successfully via Google"
+        )
+      );
   } catch (error) {
     console.error("Error during Google authentication:", error);
     return res
