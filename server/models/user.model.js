@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      default: "",
+      default:"",
     },
     refreshToken: {
       type: String, // we only send refreshToken to the database

@@ -1,10 +1,9 @@
-// import express from "express";
-// import { uploadOnCloudinary } from "../utils/cloudinary.js";
-// import { upload } from "../middlewares/multer.middleware.js";
-// import { uploadImage } from "../controllers/user.controller.js";
+import express from "express";
+import { updateUser } from "../controllers/user.controller.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
-// const router = express.Router();
+const router = express.Router();
 
-// router.post("/upload", upload.single("image"), uploadImage);
+router.patch("/update", verifyJWT, updateUser);
 
-// export default router;
+export default router;
