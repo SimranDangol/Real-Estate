@@ -115,17 +115,15 @@
 
 // export default Header;
 
-
 import { useState } from "react";
 import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import { NavLink, Link } from "react-router-dom";
 import { AiOutlineSearch, AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
-import { FaMoon } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { currentUser } = useSelector((state) => state.user);  // Getting currentUser from state
+  const { currentUser } = useSelector((state) => state.user); // Getting currentUser from state
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -145,17 +143,13 @@ const Header = () => {
         </Link>
 
         <div className="flex items-center lg:order-last">
-          <Button className="w-10 h-10 p-2 mr-2" color="gray" pill>
-            <FaMoon />
-          </Button>
-
           {currentUser ? (
             <Dropdown
               arrowIcon={false}
               inline
               label={
                 <Avatar
-                  img={currentUser?.data?.image }  // Use optional chaining with fallback
+                  img={currentUser?.data?.image} // Use optional chaining with fallback
                   rounded
                   alt="User Profile"
                 />
@@ -185,7 +179,9 @@ const Header = () => {
         </div>
 
         <div
-          className={`w-full lg:flex lg:items-center lg:w-auto ${isMenuOpen ? "block" : "hidden"}`}
+          className={`w-full lg:flex lg:items-center lg:w-auto ${
+            isMenuOpen ? "block" : "hidden"
+          }`}
         >
           <div className="lg:flex-grow lg:flex lg:items-center lg:justify-center">
             <form className="mt-4 lg:mt-0 lg:mr-4">
@@ -230,4 +226,3 @@ const Header = () => {
 };
 
 export default Header;
-

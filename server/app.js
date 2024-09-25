@@ -6,6 +6,7 @@ import cors from "cors";
 import authRouter from "./routes/auth.routes.js";
 import userRouter from "./routes/user.routes.js";
 import listingRouter from "./routes/listing.routes.js";
+import uploadRouter from "./routes/upload.routes.js";
 
 const app = express();
 
@@ -19,6 +20,6 @@ app.use(cors(corsOptions));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/listing", listingRouter);
-
+app.use("/api/v1/upload", uploadRouter);
 
 export { app };

@@ -14,6 +14,7 @@ import {
 } from "../redux/user/userSlice";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { currentUser, loading } = useSelector((state) => state.user);
@@ -130,6 +131,7 @@ const Profile = () => {
             "Update"
           )}
         </Button>
+        <Link to='/create-listing' className="p-2 text-center rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 dark:text-white ">Create Listing</Link>
       </form>
 
       <div className="flex justify-between mt-5 text-sm text-red-600 cursor-pointer ">

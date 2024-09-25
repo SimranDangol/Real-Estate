@@ -3,6 +3,7 @@ import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import Listing from "../models/listing.model.js";
 
 export const updateUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
@@ -37,3 +38,12 @@ export const deleteUser = asyncHandler(async (req, res) => {
 
   res.status(200).json(new ApiResponse(200, null, "User deleted successfully"));
 });
+
+export const getUserListings = asyncHandler(async (req, res) => {
+  if (req.user.id === req.params.id) {
+    const listings = await Listing.find({ userRef: req.params.id });
+    res.status(200).json(listings);
+  }
+  throw new ApiError(401, "You can only view your own listings!");
+});
+
