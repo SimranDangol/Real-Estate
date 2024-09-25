@@ -87,22 +87,6 @@ const Profile = () => {
     }
   };
 
-  // const handleShowListings = async () => {
-  //   try {
-  //     setShowListingsError(false);
-  //     const res = await fetch(`/api/user/listings/${currentUser.data?._id}`);
-  //     const data = await res.json();
-  //     if (data.success === false) {
-  //       setShowListingsError(true);
-  //       return;
-  //     }
-
-  //     setUserListings(data);
-  //   } catch (error) {
-  //     setShowListingsError(true);
-  //   }
-  // };
-
   const handleShowListings = async () => {
     try {
       setShowListingsError(false);
@@ -210,7 +194,6 @@ const Profile = () => {
                 />
               </Link>
 
-              {/* Listing Name */}
               <Link
                 className="flex-1 font-semibold text-black truncate hover:underline"
                 to={`/listing/${listing._id}`}
@@ -218,7 +201,6 @@ const Profile = () => {
                 {listing.name}
               </Link>
 
-              {/* Buttons in a single line with image and name */}
               <div className="flex items-center gap-2">
                 <button className="px-2 py-1 uppercase border rounded-md border-slate-700 hover:bg-red-100">
                   Delete
