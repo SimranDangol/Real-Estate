@@ -95,11 +95,12 @@ export default function CreateListing() {
       setLoading(true); // Start loading
 
       // Add userRef (user id) to formData
+
       const finalData = {
         ...formData,
-        userRef: currentUser._id,
+        userRef: currentUser.data._id,
       };
-
+  
       const res = await axios.post("/api/v1/listing/create", finalData, {
         headers: {
           "Content-Type": "application/json",

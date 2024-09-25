@@ -8,4 +8,5 @@ router.patch("/update", verifyJWT, updateUser);
 router.delete("/delete", verifyJWT, deleteUser);
 router.get("/listings/:id", verifyJWT, getUserListings);
 
+
 export default router;
