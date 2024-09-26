@@ -47,3 +47,14 @@ export const getUserListings = asyncHandler(async (req, res) => {
   throw new ApiError(401, "You can only view your own listings!");
 });
 
+export const getUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  } 
+
+  const { password: pass, ...rest } = user._doc;
+
+  res.status(200).json(rest);
+});
