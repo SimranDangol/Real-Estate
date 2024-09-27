@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import Listing from "../models/listing.model.js";
+import mongoose from "mongoose";
 
 export const createListing = asyncHandler(async (req, res) => {
   const listing = await Listing.create(req.body);
@@ -30,13 +31,34 @@ export const deleteListing = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, "Listing has been deleted"));
 });
 
+// export const getListing = asyncHandler(async (req, res, next) => {
+//   console.log("Request Params:", req.params); // Log request params
+//   const listing = await Listing.findById(req.params.id);
+//   if (!listing) {
+//     throw new ApiError(404, "Listing not found");
+//   }
+//   res.status(200).json(listing);
+// });
+
 export const getListing = asyncHandler(async (req, res, next) => {
-  const listing = await Listing.findById(req.params.id);
+  const { id } = req.params;
+
+  // Check if id is valid
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, "Invalid listing ID");
+  }
+
+  const listing = await Listing.findById(id);
+
   if (!listing) {
     throw new ApiError(404, "Listing not found");
   }
+
   res.status(200).json(listing);
 });
+
+
+
 
 export const getListings = asyncHandler(async (req, res) => {
   try {

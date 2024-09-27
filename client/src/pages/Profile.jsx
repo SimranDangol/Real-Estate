@@ -92,7 +92,7 @@ const Profile = () => {
       setShowListingsError(false);
       console.log("Current User ID:", currentUser.data._id);
 
-      const res = await fetch(`/api/v1/user/listings/${currentUser.data._id}`);
+      const res = await fetch(`/api/v1/user/listings/${currentUser.data?._id}`);
       const data = await res.json();
 
       console.log("Response Data:", data);

@@ -98,9 +98,9 @@ export default function CreateListing() {
 
       const finalData = {
         ...formData,
-        userRef: currentUser.data._id,
+        userRef: currentUser.data?._id,
       };
-  
+
       const res = await axios.post("/api/v1/listing/create", finalData, {
         headers: {
           "Content-Type": "application/json",
@@ -109,8 +109,9 @@ export default function CreateListing() {
       });
 
       if (res.data.success) {
+        console.log("Created Listing ID:", res.data.data._id); // Log the ID
+        navigate(`/listing/${res.data.data._id}`);
         toast.success(res.data.message || "Created Successfully");
-        navigate(`/listing/${res.data._id}`);
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
