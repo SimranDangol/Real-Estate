@@ -4,11 +4,10 @@ import { NavLink, Link, useNavigate } from "react-router-dom";
 import { AiOutlineSearch, AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { useSelector } from "react-redux";
 
-
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate()
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user); // Getting currentUser from state
 
   const toggleMenu = () => {
@@ -18,18 +17,18 @@ const Header = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set('searchTerm', searchTerm);
+    urlParams.set("searchTerm", searchTerm);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
   };
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const searchTermFromUrl = urlParams.get('searchTerm');
+    const searchTermFromUrl = urlParams.get("searchTerm");
     if (searchTermFromUrl) {
       setSearchTerm(searchTermFromUrl);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
 
   return (
@@ -61,7 +60,6 @@ const Header = () => {
               <Dropdown.Item>
                 <Link to="/profile"> View Profile</Link>
               </Dropdown.Item>
-              <Dropdown.Item>Sign out</Dropdown.Item>
             </Dropdown>
           ) : (
             <Link to="/login">
