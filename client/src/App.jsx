@@ -29,7 +29,7 @@ const router = createBrowserRouter(
         <Route path="create-listing" element={<CreateListing />} />
       </Route>
       <Route path="listing/:listingId" element={<Listing />} />
-      <Route path='/search' element={<Search />} />
+      <Route path="/search" element={<Search />} />
     </Route>
   )
 );
