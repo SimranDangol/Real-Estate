@@ -9,7 +9,7 @@ const Contact = ({ listing }) => {
 
   const onChange = (e) => {
     setMessage(e.target.value);
-  };
+  }
 
   useEffect(() => {
     const fetchLandlord = async () => {
